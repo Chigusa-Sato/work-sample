@@ -3,7 +3,6 @@ import { createWebHistory } from 'vue-router';
 import createRouter from './routes.js';
 import App from './App.vue';
 import './assets/style/reset.css';
-import './index.css';
 
 const router = createRouter(createWebHistory());
 const app = createApp(App);
