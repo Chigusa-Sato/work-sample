@@ -1,14 +1,14 @@
 <template>
   <div>
-    <TopNavBar />
     <router-view></router-view>
+    <OperateField />
   </div>
 </template>
 
 <script>
-import TopNavBar from './components/organisms/TopNavBar.vue';
+import OperateField from './components/organisms/OperateField.vue';
 export default {
   name: 'App',
-  components: { TopNavBar },
+  components: { OperateField },
 };
 </script>
