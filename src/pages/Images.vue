@@ -4,7 +4,7 @@
     <!-- 画像がある場合 -->
     <div v-if="imageList.length > 0" class="cardList">
       <template v-for="(imageItem, imageIndex) in imageList" :key="imageIndex">
-        <img :src="imageItem.url" alt="" />
+        <ImageCard :imageItem="imageItem" />
       </template>
     </div>
     <!-- 画像がない場合 -->
@@ -24,8 +24,10 @@
 
 <script>
 import { defineComponent, ref, reactive } from 'vue';
+import ImageCard from '../components/organisms/ImageCard.vue';
 
 export default defineComponent({
+  components: { ImageCard },
   setup() {
     const imageList = reactive([]);
 
