@@ -1,16 +1,25 @@
 <template>
   <!-- メインエリア -->
   <div class="mainArea">
-    <!-- 画像がある場合 -->
+    <!-- 画像がある場合 -->{{ referenceImageIndex }}
     <div v-if="imageList.length > 0" class="cardList">
       <template v-for="(imageItem, imageIndex) in imageList" :key="imageIndex">
-        <ImageCard :imageItem="imageItem" @clickEvent="editImage(imageIndex)" />
+        <ImageCard
+          :imageItem="imageItem"
+          :imageIndex="imageIndex"
+          :referenceImageIndex="referenceImageIndex"
+          @clickEvent="editImage(imageIndex)"
+        />
       </template>
     </div>
     <!-- 画像がない場合 -->
     <div v-if="imageList.length === 0">画像をアップロードしてください。</div>
     <!-- 操作フィールド -->
-    <OperateField @onChangeEvent="uploadImageFile" @deleteImage="deleteImage" />
+    <OperateField
+      @onChangeEvent="uploadImageFile"
+      @deleteImage="deleteImage"
+      :numberOfImageList="imageList.length"
+    />
   </div>
 </template>
 
@@ -51,6 +60,17 @@ export default defineComponent({
     //   //TODO:サイズが大きい画像ファイルをはじく
     // };
 
+    //画像編集時の操作フィールド(移動・削除ボタン)に切り替える
+    const referenceImageIndex = ref(-1); //編集対象の画像のインデックス
+    const editImage = (imageIndex) => {
+      //既に編集ボタンを選択済みの場合は選択を解除する
+      if (imageIndex === referenceImageIndex.value) {
+        referenceImageIndex.value = -1;
+        return;
+      }
+      referenceImageIndex.value = imageIndex;
+      console.log('edit');
+    };
     //削除する
     const deleteImage = () => {
       if (window.confirm('画像を削除してもよろしいですか?')) {
@@ -59,12 +79,13 @@ export default defineComponent({
       }
     };
 
-    //画像の編集
-    const editImage = () => {
-      console.log('editImage');
+    return {
+      imageList,
+      referenceImageIndex,
+      uploadImageFile,
+      deleteImage,
+      editImage,
     };
-
-    return { imageList, uploadImageFile, deleteImage, editImage };
   },
 });
 </script>

@@ -39,6 +39,16 @@ import UploadButton from '../atoms/UploadButton.vue';
 
 export default defineComponent({
   components: { ButtonLine, UploadButton, ButtonSolid },
+  props: {
+    referenceImageIndex: {
+      type: Number,
+      required: true,
+    },
+    numberOfImageList: {
+      type: Number,
+      required: true,
+    },
+  },
   setup(props, { emit }) {
     const onClickEvent = (event) => {
       emit('onClickEvent', event);
@@ -61,12 +71,8 @@ export default defineComponent({
     return {
       onClickEvent,
       onChangeEvent,
-      movingLeft,
-      movingRight,
       deselectImage,
       deleteImage,
-      buttonTextBack,
-      buttonTextFoward,
     };
   },
 });

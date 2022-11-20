@@ -1,5 +1,8 @@
 <template>
-  <div class="card">
+  <div
+    class="card"
+    :class="imageIndex === referenceImageIndex ? 'selected' : 'unselected'"
+  >
     <img :src="imageItem.url" alt="" />
     <ButtonSolid class="button__edit" @clickEvent="onClickEvent" label="編集" />
   </div>
@@ -14,6 +17,14 @@ export default defineComponent({
   props: {
     imageItem: {
       type: Object,
+      required: true,
+    },
+    imageIndex: {
+      type: Number,
+      required: true,
+    },
+    referenceImageIndex: {
+      type: Number,
       required: true,
     },
   },
@@ -58,5 +69,8 @@ export default defineComponent({
   background: white;
   border: 2px solid black;
   color: black;
+}
+.selected {
+  border: 4px solid rgb(180, 180, 180);
 }
 </style>
