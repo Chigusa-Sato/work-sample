@@ -2,15 +2,15 @@
   <!-- メインエリア -->
   <div class="mainArea">
     <!-- 画像がある場合 -->
-    <!-- <div v-if="imageList.length > 0" class="cardList"> -->
-    <template v-for="(imageItem, imageIndex) in imageList" :key="imageIndex">
-      <ImageCard :imageItem="imageItem" @clickEvent="editImage(imageIndex)" />
-    </template>
-    <!-- </div> -->
+    <div v-if="imageList.length > 0" class="cardList">
+      <template v-for="(imageItem, imageIndex) in imageList" :key="imageIndex">
+        <ImageCard :imageItem="imageItem" @clickEvent="editImage(imageIndex)" />
+      </template>
+    </div>
     <!-- 画像がない場合 -->
     <div v-if="imageList.length === 0">画像をアップロードしてください。</div>
     <!-- 操作フィールド -->
-    <OperateField @onChangeEvent="uploadImageFile" />
+    <OperateField @onChangeEvent="uploadImageFile" @deleteImage="deleteImage" />
   </div>
 </template>
 
@@ -51,12 +51,20 @@ export default defineComponent({
     //   //TODO:サイズが大きい画像ファイルをはじく
     // };
 
+    //削除する
+    const deleteImage = () => {
+      if (window.confirm('画像を削除してもよろしいですか?')) {
+        imageList.splice(referenceImageIndex.value, 1);
+        referenceImageIndex.value = -1;
+      }
+    };
+
     //画像の編集
     const editImage = () => {
       console.log('editImage');
     };
 
-    return { imageList, uploadImageFile, editImage };
+    return { imageList, uploadImageFile, deleteImage, editImage };
   },
 });
 </script>

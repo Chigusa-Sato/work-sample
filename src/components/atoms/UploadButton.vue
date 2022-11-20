@@ -31,7 +31,6 @@ export default defineComponent({
       inputFile.value.click();
     };
     const onChangeEvent = (event) => {
-      console.log('孫');
       emit('onChangeEvent', event);
     };
     return { inputFile, selectFile, onChangeEvent };
