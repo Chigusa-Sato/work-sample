@@ -4,30 +4,35 @@
     <!-- 画像がある場合 -->
     <div v-if="imageList.length > 0" class="cardList">
       <template v-for="(imageItem, imageIndex) in imageList" :key="imageIndex">
-        <ImageCard :imageItem="imageItem" @clickEvent="editImage(imageIndex)" />
+        <ImageCard
+          :imageItem="imageItem"
+          :imageIndex="imageIndex"
+          :referenceImageIndex="referenceImageIndex"
+          @clickEvent="editImage(imageIndex)"
+        />
       </template>
     </div>
     <!-- 画像がない場合 -->
     <div v-if="imageList.length === 0">画像をアップロードしてください。</div>
+    <!-- 操作フィールド -->
+    <OperateField
+      @onChangeEvent="uploadImageFile"
+      @deleteImage="deleteImage"
+      @movingLeft="movingLeft"
+      @movingRight="movingRight"
+      :numberOfImageList="imageList.length"
+      :referenceImageIndex="referenceImageIndex"
+    />
   </div>
-
-  <input
-    type="file"
-    multiple="multiple"
-    accept="image/jpg, image/jpeg, image/png"
-    required
-    ref="inputFile"
-    @change="uploadImageFile"
-    class="fileUpload__input"
-  />
 </template>
 
 <script>
 import { defineComponent, ref, reactive } from 'vue';
+import OperateField from '../components/organisms/OperateField.vue';
 import ImageCard from '../components/organisms/ImageCard.vue';
 
 export default defineComponent({
-  components: { ImageCard },
+  components: { OperateField, ImageCard },
   setup() {
     const imageList = reactive([]);
 
@@ -53,16 +58,55 @@ export default defineComponent({
         };
       });
     };
+
     // const isCollectSizeImage = () => {
     //   //TODO:サイズが大きい画像ファイルをはじく
     // };
 
-    //画像の編集
-    const editImage = () => {
-      console.log('editImage');
+    //画像編集時の操作フィールド(移動・削除ボタン)に切り替える
+    const referenceImageIndex = ref(-1); //編集対象の画像のインデックス
+    const editImage = (imageIndex) => {
+      //既に編集ボタンを選択済みの場合は選択を解除する
+      if (imageIndex === referenceImageIndex.value) {
+        referenceImageIndex.value = -1;
+        return;
+      }
+      referenceImageIndex.value = imageIndex;
+    };
+    //右に移動する
+    const movingLeft = () => {
+      const imageIndex = referenceImageIndex.value;
+      const targetImage = imageList[imageIndex];
+      imageList.splice(imageIndex, 1);
+      imageList.splice(imageIndex - 1, 0, targetImage);
+      referenceImageIndex.value = imageIndex - 1;
     };
 
-    return { imageList, uploadImageFile, editImage };
+    //左に移動する
+    const movingRight = () => {
+      const imageIndex = referenceImageIndex.value;
+      const targetImage = imageList[imageIndex];
+      imageList.splice(imageIndex, 1);
+      imageList.splice(imageIndex + 1, 0, targetImage);
+      referenceImageIndex.value = imageIndex + 1;
+    };
+    //削除する
+    const deleteImage = () => {
+      if (window.confirm('画像を削除してもよろしいですか?')) {
+        imageList.splice(referenceImageIndex.value, 1);
+        referenceImageIndex.value = -1;
+      }
+    };
+
+    return {
+      imageList,
+      referenceImageIndex,
+      uploadImageFile,
+      deleteImage,
+      editImage,
+      movingLeft,
+      movingRight,
+    };
   },
 });
 </script>
