@@ -17,6 +17,7 @@
     <!-- 操作フィールド -->
     <OperateField
       @onChangeEvent="uploadImageFile"
+      @onClickEvent="storeImageList"
       @deleteImage="deleteImage"
       @movingLeft="movingLeft"
       @movingRight="movingRight"
@@ -30,12 +31,14 @@
 import { defineComponent, ref, reactive } from 'vue';
 import OperateField from '../components/organisms/OperateField.vue';
 import ImageCard from '../components/organisms/ImageCard.vue';
+import axios from 'axios';
 
 export default defineComponent({
   components: { OperateField, ImageCard },
   setup() {
     const imageList = reactive([]);
 
+    //画像のアップロード
     const uploadImageFile = (event) => {
       const selectedFiles = Array.from(
         event.target.files || event.dataTransfer.files
@@ -63,6 +66,19 @@ export default defineComponent({
     //   //TODO:サイズが大きい画像ファイルをはじく
     // };
 
+    //画像をDBに保存する
+    const storeImageList = () => {
+      axios
+        .post(`https://httpbin.org/post?imageList=${imageList}`)
+        // .post(`https://httpbin.org/status/404`)
+        .then((response) => {
+          console.log('res', response);
+        })
+        .catch(() => {
+          console.log('保存に失敗しました');
+        });
+    };
+
     //画像編集時の操作フィールド(移動・削除ボタン)に切り替える
     const referenceImageIndex = ref(-1); //編集対象の画像のインデックス
     const editImage = (imageIndex) => {
@@ -73,6 +89,7 @@ export default defineComponent({
       }
       referenceImageIndex.value = imageIndex;
     };
+
     //右に移動する
     const movingLeft = () => {
       const imageIndex = referenceImageIndex.value;
@@ -90,6 +107,7 @@ export default defineComponent({
       imageList.splice(imageIndex + 1, 0, targetImage);
       referenceImageIndex.value = imageIndex + 1;
     };
+
     //削除する
     const deleteImage = () => {
       if (window.confirm('画像を削除してもよろしいですか?')) {
@@ -97,11 +115,11 @@ export default defineComponent({
         referenceImageIndex.value = -1;
       }
     };
-
     return {
       imageList,
       referenceImageIndex,
       uploadImageFile,
+      storeImageList,
       deleteImage,
       editImage,
       movingLeft,

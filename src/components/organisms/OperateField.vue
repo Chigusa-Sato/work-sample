@@ -2,7 +2,11 @@
   <div class="operateField">
     <!-- 編集時(ファイル選択・保存) -->
     <div class="buttonBlock" v-show="referenceImageIndex === -1">
-      <ButtonLine @clickEvent="onClickEvent" label="保存" />
+      <ButtonLine
+        @clickEvent="onClickEvent"
+        label="保存"
+        v-show="hasImageList"
+      />
       <uploadButton @onChangeEvent="onChangeEvent" />
     </div>
     <!-- 編集時(移動・削除) -->
@@ -32,7 +36,7 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue';
+import { defineComponent, computed } from 'vue';
 import ButtonLine from '../atoms/ButtonLine.vue';
 import ButtonSolid from '../atoms/ButtonSolid.vue';
 import UploadButton from '../atoms/UploadButton.vue';
@@ -70,9 +74,9 @@ export default defineComponent({
     };
 
     //画像が登録済みか否かを返す(操作フィールドの表示判定用)
-    // const hasImageList = computed(() => {
-    //   return props.numberOfImageList > 0;
-    // });
+    const hasImageList = computed(() => {
+      return props.numberOfImageList > 0;
+    });
 
     return {
       onClickEvent,
@@ -81,6 +85,7 @@ export default defineComponent({
       movingRight,
       deselectImage,
       deleteImage,
+      hasImageList,
     };
   },
 });
