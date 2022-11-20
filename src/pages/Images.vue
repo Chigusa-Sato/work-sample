@@ -4,7 +4,7 @@
     <!-- 画像がある場合 -->
     <div v-if="imageList.length > 0" class="cardList">
       <template v-for="(imageItem, imageIndex) in imageList" :key="imageIndex">
-        <ImageCard :imageItem="imageItem" />
+        <ImageCard :imageItem="imageItem" @clickEvent="editImage(imageIndex)" />
       </template>
     </div>
     <!-- 画像がない場合 -->
@@ -56,7 +56,13 @@ export default defineComponent({
     // const isCollectSizeImage = () => {
     //   //TODO:サイズが大きい画像ファイルをはじく
     // };
-    return { imageList, uploadImageFile };
+
+    //画像の編集
+    const editImage = () => {
+      console.log('editImage');
+    };
+
+    return { imageList, uploadImageFile, editImage };
   },
 });
 </script>
