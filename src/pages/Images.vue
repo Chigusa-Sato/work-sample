@@ -1,7 +1,7 @@
 <template>
   <!-- メインエリア -->
   <div class="mainArea">
-    <!-- 画像がある場合 -->{{ referenceImageIndex }}
+    <!-- 画像がある場合 -->
     <div v-if="imageList.length > 0" class="cardList">
       <template v-for="(imageItem, imageIndex) in imageList" :key="imageIndex">
         <ImageCard
@@ -18,7 +18,10 @@
     <OperateField
       @onChangeEvent="uploadImageFile"
       @deleteImage="deleteImage"
+      @movingLeft="movingLeft"
+      @movingRight="movingRight"
       :numberOfImageList="imageList.length"
+      :referenceImageIndex="referenceImageIndex"
     />
   </div>
 </template>
@@ -69,7 +72,23 @@ export default defineComponent({
         return;
       }
       referenceImageIndex.value = imageIndex;
-      console.log('edit');
+    };
+    //右に移動する
+    const movingLeft = () => {
+      const imageIndex = referenceImageIndex.value;
+      const targetImage = imageList[imageIndex];
+      imageList.splice(imageIndex, 1);
+      imageList.splice(imageIndex - 1, 0, targetImage);
+      referenceImageIndex.value = imageIndex - 1;
+    };
+
+    //左に移動する
+    const movingRight = () => {
+      const imageIndex = referenceImageIndex.value;
+      const targetImage = imageList[imageIndex];
+      imageList.splice(imageIndex, 1);
+      imageList.splice(imageIndex + 1, 0, targetImage);
+      referenceImageIndex.value = imageIndex + 1;
     };
     //削除する
     const deleteImage = () => {
@@ -85,6 +104,8 @@ export default defineComponent({
       uploadImageFile,
       deleteImage,
       editImage,
+      movingLeft,
+      movingRight,
     };
   },
 });

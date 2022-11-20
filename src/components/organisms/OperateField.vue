@@ -1,23 +1,23 @@
 <template>
   <div class="operateField">
     <!-- 編集時(ファイル選択・保存) -->
-    <div class="buttonBlock">
+    <div class="buttonBlock" v-show="referenceImageIndex === -1">
       <ButtonLine @clickEvent="onClickEvent" label="保存" />
       <uploadButton @onChangeEvent="onChangeEvent" />
     </div>
     <!-- 編集時(移動・削除) -->
     <div class="buttonBlock" v-show="referenceImageIndex >= 0">
       <div class="buttonBlock__item">
-        <!-- <ButtonSolid
+        <ButtonSolid
           @clickEvent="movingLeft"
           :disabled="referenceImageIndex === 0"
-          :label="buttonTextBack"
+          label="左へ移動"
         />
         <ButtonSolid
           @clickEvent="movingRight"
           :disabled="referenceImageIndex >= numberOfImageList - 1"
-          :label="buttonTextFoward"
-        /> -->
+          label="右へ移動"
+        />
       </div>
       <div class="buttonBlock__item">
         <ButtonLine
@@ -56,6 +56,12 @@ export default defineComponent({
     const onChangeEvent = (event) => {
       emit('onChangeEvent', event);
     };
+    const movingLeft = () => {
+      emit('movingLeft');
+    };
+    const movingRight = () => {
+      emit('movingRight');
+    };
     const deleteImage = () => {
       emit('deleteImage');
     };
@@ -71,6 +77,8 @@ export default defineComponent({
     return {
       onClickEvent,
       onChangeEvent,
+      movingLeft,
+      movingRight,
       deselectImage,
       deleteImage,
     };
