@@ -1,5 +1,5 @@
 <template>
-  <button @click="onClickEvent" class="button_solid">{{ label }}</button>
+  <button @click="onClickEvent" class="button_line">{{ label }}</button>
 </template>
 
 <script>
@@ -22,19 +22,20 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.button_solid {
+.button_line {
   width: 150px;
   padding: 5px;
-  color: #fff;
-  font-weight: bold;
-  border: 2px solid rgb(62, 136, 255);
-  background: rgb(62, 136, 255);
+  color: rgb(226, 83, 83);
+  border: 2px solid rgb(226, 83, 83);
+  background: #fff;
   border-radius: 4px;
   text-align: center;
+  font-weight: bold;
 }
-.button_solid:hover {
-  color: rgb(62, 136, 255);
-  border: 2px solid rgb(62, 136, 255);
-  background: #fff;
+
+.button_line:hover {
+  background: rgb(226, 83, 83);
+  color: #fff;
+  font-weight: bold;
 }
 </style>

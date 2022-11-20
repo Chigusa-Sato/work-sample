@@ -1,13 +1,16 @@
 <template>
   <div class="card">
     <img :src="imageItem.url" alt="" />
-    <button class="button__edit">編集</button>
+    <ButtonSolid class="button__edit" @clickEvent="onClickEvent" label="編集" />
   </div>
 </template>
 
 <script>
 import { defineComponent, reactive } from 'vue';
+import ButtonSolid from '../atoms/ButtonSolid.vue';
+
 export default defineComponent({
+  components: { ButtonSolid },
   props: {
     imageItem: {
       type: Object,
