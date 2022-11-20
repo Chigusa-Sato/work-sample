@@ -2,32 +2,25 @@
   <!-- メインエリア -->
   <div class="mainArea">
     <!-- 画像がある場合 -->
-    <div v-if="imageList.length > 0" class="cardList">
-      <template v-for="(imageItem, imageIndex) in imageList" :key="imageIndex">
-        <ImageCard :imageItem="imageItem" @clickEvent="editImage(imageIndex)" />
-      </template>
-    </div>
+    <!-- <div v-if="imageList.length > 0" class="cardList"> -->
+    <template v-for="(imageItem, imageIndex) in imageList" :key="imageIndex">
+      <ImageCard :imageItem="imageItem" @clickEvent="editImage(imageIndex)" />
+    </template>
+    <!-- </div> -->
     <!-- 画像がない場合 -->
     <div v-if="imageList.length === 0">画像をアップロードしてください。</div>
+    <!-- 操作フィールド -->
+    <OperateField @onChangeEvent="uploadImageFile" />
   </div>
-
-  <input
-    type="file"
-    multiple="multiple"
-    accept="image/jpg, image/jpeg, image/png"
-    required
-    ref="inputFile"
-    @change="uploadImageFile"
-    class="fileUpload__input"
-  />
 </template>
 
 <script>
 import { defineComponent, ref, reactive } from 'vue';
+import OperateField from '../components/organisms/OperateField.vue';
 import ImageCard from '../components/organisms/ImageCard.vue';
 
 export default defineComponent({
-  components: { ImageCard },
+  components: { OperateField, ImageCard },
   setup() {
     const imageList = reactive([]);
 
@@ -53,6 +46,7 @@ export default defineComponent({
         };
       });
     };
+
     // const isCollectSizeImage = () => {
     //   //TODO:サイズが大きい画像ファイルをはじく
     // };

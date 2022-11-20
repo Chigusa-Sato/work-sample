@@ -1,15 +1,35 @@
 <template>
   <div class="operateField">
-    <ButtonLine label="ButtonLine" />
+    <!-- 編集時(ファイル選択・保存) -->
+    <div class="buttonBlock">
+      <ButtonLine @clickEvent="onClickEvent" label="保存" />
+      <uploadButton @onChangeEvent="onChangeEvent" />
+    </div>
   </div>
 </template>
 
 <script>
 import { defineComponent } from 'vue';
 import ButtonLine from '../atoms/ButtonLine.vue';
+import ButtonSolid from '../atoms/ButtonSolid.vue';
+import UploadButton from '../atoms/UploadButton.vue';
 
 export default defineComponent({
-  components: { ButtonLine },
+  components: { ButtonLine, UploadButton, ButtonSolid },
+  setup(props, { emit }) {
+    const onClickEvent = (event) => {
+      emit('onClickEvent', event);
+    };
+    const onChangeEvent = (event) => {
+      emit('onChangeEvent', event);
+      console.log('子:onChange');
+    };
+
+    return {
+      onClickEvent,
+      onChangeEvent,
+    };
+  },
 });
 </script>
 
