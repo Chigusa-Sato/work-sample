@@ -165,7 +165,7 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style scoped>
 .mainArea {
   padding: 10px 0px;
 }

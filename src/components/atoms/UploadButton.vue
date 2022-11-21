@@ -3,7 +3,7 @@
     <ButtonLine
       label="画像アップロード"
       @clickEvent="selectFile"
-      class="fileUpload__button"
+      class="fileUpload__button button__medium"
       id="buttonLine--normal"
     />
     <input
@@ -42,13 +42,13 @@ export default defineComponent({
 .fileUpload__input {
   display: none;
 }
-.fileUpload__button {
+/* .fileUpload__button {
   cursor: default;
   background: #90c9ff;
   border-radius: 2px;
   color: #555;
   padding: 10px 12px;
-}
+} */
 #buttonLine--normal {
   color: rgb(88, 88, 88);
   border: 2px solid rgb(88, 88, 88);
@@ -56,5 +56,8 @@ export default defineComponent({
 #buttonLine--normal:hover {
   background: rgb(88, 88, 88);
   color: #fff;
+}
+.button__medium {
+  width: 150px;
 }
 </style>

@@ -2,41 +2,50 @@
   <div class="operateField">
     <!-- 編集時(ファイル選択・保存) -->
     <div class="buttonBlock" v-show="referenceImageIndex === -1">
-      <ButtonLine
+      <uploadButton @onChangeEvent="onChangeEvent" />
+      <ButtonSolid
         @clickEvent="onClickEvent"
         label="保存"
         v-show="hasImageList"
+        class="button__medium"
       />
-      <uploadButton @onChangeEvent="onChangeEvent" />
     </div>
     <!-- 編集時(移動・削除) -->
     <div class="buttonBlock" v-show="referenceImageIndex >= 0">
       <div class="buttonBlock__item">
-        <ButtonSolid
+        <ButtonLine
           @clickEvent="movingLeft"
           :disabled="referenceImageIndex === 0"
-          label="左へ移動"
+          :label="buttonTextBack"
+          id="buttonLine--normal"
+          class="button__small"
         />
-        <ButtonSolid
+        <ButtonLine
           @clickEvent="movingRight"
           :disabled="referenceImageIndex >= numberOfImageList - 1"
-          label="右へ移動"
+          :label="buttonTextFoward"
+          id="buttonLine--normal"
+          class="button__small"
         />
       </div>
       <div class="buttonBlock__item">
-        <ButtonLine
+        <button-solid
           @clickEvent="deselectImage"
           label="完了"
-          id="buttonLine--normal"
+          class="button__medium"
         />
-        <ButtonLine @clickEvent="deleteImage" label="削除" />
+        <ButtonLine
+          @clickEvent="deleteImage"
+          label="削除"
+          class="button__medium"
+        />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { defineComponent, computed } from 'vue';
+import { defineComponent, ref, computed, onMounted } from 'vue';
 import ButtonLine from '../atoms/ButtonLine.vue';
 import ButtonSolid from '../atoms/ButtonSolid.vue';
 import UploadButton from '../atoms/UploadButton.vue';
@@ -78,6 +87,27 @@ export default defineComponent({
       return props.numberOfImageList > 0;
     });
 
+    // resizeでウィンドウサイズ変更を検知
+    onMounted(() => {
+      window.addEventListener('resize', calculateWindowWidth);
+    });
+    //移動ボタンに表示するテキスト
+    let buttonTextBack = ref('←左へ');
+    let buttonTextFoward = ref('右へ→');
+    // 画面幅(px)
+    const windowWidth = ref(0);
+    //509px以下の場合は「上下」へ移動
+    const calculateWindowWidth = () => {
+      windowWidth.value = window.innerWidth;
+      if (windowWidth.value < 509) {
+        buttonTextBack.value = '↑上へ';
+        buttonTextFoward.value = '↓下へ';
+      } else {
+        buttonTextBack.value = '←左へ';
+        buttonTextFoward.value = '右へ→';
+      }
+    };
+
     return {
       onClickEvent,
       onChangeEvent,
@@ -86,12 +116,14 @@ export default defineComponent({
       deselectImage,
       deleteImage,
       hasImageList,
+      buttonTextBack,
+      buttonTextFoward,
     };
   },
 });
 </script>
 
-<style>
+<style scoped>
 .operateField {
   background: rgb(180, 180, 180);
   width: 100%;
@@ -117,6 +149,12 @@ export default defineComponent({
 #buttonLine--normal:hover {
   background: rgb(88, 88, 88);
   color: #fff;
+}
+.button__small {
+  width: 100px;
+}
+.button__medium {
+  width: 150px;
 }
 /* PCサイズ */
 @media screen and (min-width: 376px) {
