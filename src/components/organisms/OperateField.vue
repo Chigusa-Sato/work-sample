@@ -34,11 +34,6 @@
           label="完了"
           class="button__medium"
         />
-        <!-- <ButtonLine
-          @clickEvent="deleteImage"
-          label="削除"
-          class="button__medium"
-        /> -->
       </div>
     </div>
   </div>

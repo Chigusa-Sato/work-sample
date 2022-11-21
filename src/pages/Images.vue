@@ -8,7 +8,8 @@
           :imageItem="imageItem"
           :imageIndex="imageIndex"
           :referenceImageIndex="referenceImageIndex"
-          @clickEvent="editImage(imageIndex)"
+          @editImage="editImage(imageIndex)"
+          @deleteImage="deleteImage(imageIndex)"
         />
       </template>
     </div>

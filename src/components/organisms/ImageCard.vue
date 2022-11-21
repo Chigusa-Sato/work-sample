@@ -4,7 +4,18 @@
     :class="imageIndex === referenceImageIndex ? 'selected' : 'unselected'"
   >
     <img :src="imageItem.url" alt="" />
-    <ButtonSolid class="button__edit" @clickEvent="onClickEvent" label="編集" />
+    <ButtonSolid
+      v-show="imageIndex !== referenceImageIndex"
+      class="button__edit button__absolute"
+      @clickEvent="editImage"
+      label="編集"
+    />
+    <ButtonSolid
+      v-show="imageIndex === referenceImageIndex"
+      class="button__delete button__absolute"
+      @clickEvent="deleteImage"
+      label="削除"
+    />
   </div>
 </template>
 
@@ -31,10 +42,13 @@ export default defineComponent({
   setup(props, { emit }) {
     props = reactive(props);
 
-    const onClickEvent = () => {
-      emit('clickEvent');
+    const editImage = () => {
+      emit('editImage');
     };
-    return { onClickEvent };
+    const deleteImage = () => {
+      emit('deleteImage');
+    };
+    return { editImage, deleteImage };
   },
 });
 </script>
@@ -54,21 +68,33 @@ export default defineComponent({
   object-fit: contain;
 }
 .button__edit {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  /* MEMO:ここでcssの上書はＮＧかもしれないので確認 */
   width: 50px;
   background: black;
   color: white;
   border: 2px solid black;
   opacity: 60%;
 }
-
 .button__edit:hover {
   background: white;
   border: 2px solid black;
   color: black;
+}
+.button__delete {
+  width: 50px;
+  background: rgb(208, 0, 0);
+  color: white;
+  border: 2px solid rgb(208, 0, 0);
+  opacity: 60%;
+}
+.button__delete:hover {
+  background: white;
+  border: 2px solid rgb(208, 0, 0);
+  color: rgb(208, 0, 0);
+}
+.button__absolute {
+  position: absolute;
+  top: 10px;
+  right: 10px;
 }
 .selected {
   border: 4px solid rgb(180, 180, 180);
