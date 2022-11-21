@@ -25,6 +25,17 @@
       :referenceImageIndex="referenceImageIndex"
     />
   </div>
+  <!-- トースト(保存成功) -->
+  <div
+    class="toast success"
+    :id="isShow && isSucceeded ? 'active' : 'inactive'"
+  >
+    保存しました
+  </div>
+  <!-- トースト(保存失敗) -->
+  <div class="toast failure" :id="isShow && isFailure ? 'active' : 'inactive'">
+    保存に失敗しました
+  </div>
 </template>
 
 <script>
@@ -73,10 +84,32 @@ export default defineComponent({
         // .post(`https://httpbin.org/status/404`)
         .then((response) => {
           console.log('res', response);
+          //トースト表示(保存成功)用のフラグを設定
+          isSucceeded.value = true;
+          isFailure.value = false;
         })
         .catch(() => {
+          //トースト表示(保存失敗)用のフラグを設定
+          isSucceeded.value = false;
+          isFailure.value = true;
           console.log('保存に失敗しました');
         });
+      showToast();
+    };
+
+    //トーストを表示し3秒後に非表示に戻す
+    let isShow = ref(false);
+    let isSucceeded = ref(false);
+    let isFailure = ref(false);
+    const showToast = () => {
+      isShow.value = true;
+      setTimeout(() => {
+        hideToast();
+      }, 2000);
+    };
+
+    const hideToast = () => {
+      isShow.value = false;
     };
 
     //画像編集時の操作フィールド(移動・削除ボタン)に切り替える
@@ -118,6 +151,9 @@ export default defineComponent({
     return {
       imageList,
       referenceImageIndex,
+      isShow,
+      isSucceeded,
+      isFailure,
       uploadImageFile,
       storeImageList,
       deleteImage,
@@ -169,5 +205,29 @@ export default defineComponent({
   background: rgb(62, 136, 255);
   border-radius: 4px;
   text-align: center;
+}
+/* トースト */
+.toast {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  color: #fff;
+  border-radius: 4px;
+  font-weight: bold;
+  padding: 10px 20px;
+}
+.success {
+  background: rgb(0, 149, 255);
+}
+.failure {
+  background: rgb(242, 85, 85);
+}
+#active {
+  display: block;
+  transition: 0.5s;
+}
+#inactive {
+  display: none;
+  transition: 0.5s;
 }
 </style>
