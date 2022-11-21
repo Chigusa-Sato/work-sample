@@ -3,7 +3,10 @@
   <div class="mainArea">
     <!-- 画像がある場合 -->
     <div v-if="imageList.length > 0" class="mainArea__contentainer cardList">
-      <template v-for="(imageItem, imageIndex) in imageList" :key="imageIndex">
+      <template
+        v-for="(imageItem, imageIndex) in imageList"
+        :key="imageItem.id"
+      >
         <ImageCard
           :imageItem="imageItem"
           :imageIndex="imageIndex"
@@ -39,6 +42,13 @@
   <div class="toast failure" :id="isShow && isFailure ? 'active' : 'inactive'">
     保存に失敗しました
   </div>
+  <!-- トースト(画像サイズ超過) -->
+  <div
+    class="toast failure"
+    :id="isShow && hasExceededFileSize ? 'active' : 'inactive'"
+  >
+    ※画像サイズは5MB以下にしてください
+  </div>
 </template>
 
 <script>
@@ -52,35 +62,51 @@ export default defineComponent({
   setup() {
     const imageList = reactive([]);
 
-    //画像のアップロード
+    //IDを生成(画像に紐づける)
+    const getUniqueId = () => {
+      return (
+        new Date().getTime().toString() +
+        Math.floor(Math.random() * 10).toString()
+      );
+    };
+
+    //画像のアップロード-------------------
+    let hasExceededFileSize = ref(false);
     const uploadImageFile = (event) => {
       const selectedFiles = Array.from(
         event.target.files || event.dataTransfer.files
       );
 
-      //ファイルの選択をキャンセルしたら処理を中断する
+      //ファイルの選択をキャンセルしたら処理中断
       const hasFile = selectedFiles.length > 0;
       if (!hasFile) {
         return;
       }
 
-      selectedFiles.forEach((file, index) => {
+      //ファイルサイズが5MG以上の場合はアップロード中断
+      const FIlE_SIZE_LIMIT_BYTE = 1024 * 1024 * 5; //上限5MB
+      hasExceededFileSize.value = selectedFiles.some(
+        (file) => file.size > FIlE_SIZE_LIMIT_BYTE
+      );
+      if (hasExceededFileSize.value) {
+        showToast();
+        return;
+      }
+
+      //imageListに格納
+      selectedFiles.forEach((file) => {
         const reader = new FileReader();
         //Base64に変換
         reader.readAsDataURL(file);
         //プレビュー用のURLを作成する
         reader.onload = (e) => {
           const imageUrl = e.target.result;
-          imageList.push({ url: imageUrl });
+          imageList.push({ url: imageUrl, id: getUniqueId() });
         };
       });
     };
 
-    // const isCollectSizeImage = () => {
-    //   //TODO:サイズが大きい画像ファイルをはじく
-    // };
-
-    //画像をDBに保存する
+    //画像をDBに保存する---------------------------
     const storeImageList = () => {
       axios
         .post(`https://httpbin.org/post?imageList=${imageList}`)
@@ -104,6 +130,7 @@ export default defineComponent({
     let isShow = ref(false);
     let isSucceeded = ref(false);
     let isFailure = ref(false);
+
     const showToast = () => {
       isShow.value = true;
       setTimeout(() => {
@@ -160,6 +187,7 @@ export default defineComponent({
       isShow,
       isSucceeded,
       isFailure,
+      hasExceededFileSize,
       uploadImageFile,
       storeImageList,
       deleteImage,

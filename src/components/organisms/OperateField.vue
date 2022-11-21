@@ -1,6 +1,6 @@
 <template>
   <div class="operateField">
-    <!-- 編集時(ファイル選択・保存) -->
+    <!-- 編集時(画像アップロード・保存) -->
     <div class="buttonBlock" v-show="referenceImageIndex === -1">
       <uploadButton @onChangeEvent="onChangeEvent" />
       <ButtonSolid
@@ -155,6 +155,10 @@ export default defineComponent({
 }
 .button__medium {
   width: 150px;
+}
+.text--error {
+  color: red;
+  font-weight: bold;
 }
 /* PCサイズ */
 @media screen and (min-width: 376px) {
