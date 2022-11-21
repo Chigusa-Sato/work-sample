@@ -2,7 +2,7 @@
   <!-- メインエリア -->
   <div class="mainArea">
     <!-- 画像がある場合 -->
-    <div v-if="imageList.length > 0" class="cardList">
+    <div v-if="imageList.length > 0" class="mainArea__contentainer cardList">
       <template v-for="(imageItem, imageIndex) in imageList" :key="imageIndex">
         <ImageCard
           :imageItem="imageItem"
@@ -13,12 +13,15 @@
       </template>
     </div>
     <!-- 画像がない場合 -->
-    <div v-if="imageList.length === 0">画像をアップロードしてください。</div>
+    <div class="mainArea__contentainer title" v-if="imageList.length === 0">
+      <p>※画像をアップロードしてください。</p>
+    </div>
     <!-- 操作フィールド -->
     <OperateField
       @onChangeEvent="uploadImageFile"
       @onClickEvent="storeImageList"
       @deleteImage="deleteImage"
+      @deselectImage="deselectImage"
       @movingLeft="movingLeft"
       @movingRight="movingRight"
       :numberOfImageList="imageList.length"
@@ -140,7 +143,10 @@ export default defineComponent({
       imageList.splice(imageIndex + 1, 0, targetImage);
       referenceImageIndex.value = imageIndex + 1;
     };
-
+    //画像の選択を解除する
+    const deselectImage = () => {
+      referenceImageIndex.value = -1;
+    };
     //削除する
     const deleteImage = () => {
       if (window.confirm('画像を削除してもよろしいですか?')) {
@@ -158,6 +164,7 @@ export default defineComponent({
       storeImageList,
       deleteImage,
       editImage,
+      deselectImage,
       movingLeft,
       movingRight,
     };
@@ -165,10 +172,25 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style scoped>
 .mainArea {
+  width: 100%;
+  height: 100vh;
   padding: 10px 0px;
 }
+.mainArea__contentainer {
+  height: 100%;
+}
+.title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.title p {
+  font-weight: bold;
+  color: rgb(88, 88, 88);
+}
+
 .cardList {
   width: 100%;
   display: flex;

@@ -23,7 +23,6 @@ export default defineComponent({
 
 <style scoped>
 .button_line {
-  width: 150px;
   padding: 5px;
   color: rgb(226, 83, 83);
   border: 2px solid rgb(226, 83, 83);

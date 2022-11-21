@@ -23,7 +23,6 @@ export default defineComponent({
 
 <style scoped>
 .button_solid {
-  width: 150px;
   padding: 5px;
   color: #fff;
   font-weight: bold;
