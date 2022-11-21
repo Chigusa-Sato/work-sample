@@ -101,4 +101,33 @@ export default defineComponent({
   display: flex;
   justify-content: center;
 }
+.buttonBlock {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+.buttonBlock__item {
+  display: flex;
+  gap: 5px;
+}
+#buttonLine--normal {
+  color: rgb(88, 88, 88);
+  border: 2px solid rgb(88, 88, 88);
+}
+#buttonLine--normal:hover {
+  background: rgb(88, 88, 88);
+  color: #fff;
+}
+/* PCサイズ */
+@media screen and (min-width: 376px) {
+  .buttonBlock__item {
+    align-items: center;
+  }
+}
+/* スマホサイズ */
+@media screen and (max-width: 375px) {
+  .buttonBlock__item {
+    flex-direction: column;
+  }
+}
 </style>
