@@ -2,7 +2,7 @@
   <!-- メインエリア -->
   <div class="mainArea">
     <!-- 画像がある場合 -->
-    <div v-if="imageList.length > 0" class="mainArea__contentainer cardList">
+    <div v-if="imageList.length > 0" class="mainArea__container cardList">
       <template
         v-for="(imageItem, imageIndex) in imageList"
         :key="imageItem.id"
@@ -17,7 +17,7 @@
       </template>
     </div>
     <!-- 画像がない場合 -->
-    <div class="mainArea__contentainer title" v-if="imageList.length === 0">
+    <div class="mainArea__container title" v-if="imageList.length === 0">
       <p>※画像をアップロードしてください。</p>
     </div>
     <!-- 操作フィールド -->
@@ -33,23 +33,21 @@
     />
   </div>
   <!-- トースト(保存成功) -->
-  <div
-    class="toast success"
-    :id="isShow && isSucceeded ? 'active' : 'inactive'"
-  >
-    保存しました
-  </div>
+  <transition>
+    <div class="toast success" v-show="isShow && isSucceeded">保存しました</div>
+  </transition>
   <!-- トースト(保存失敗) -->
-  <div class="toast failure" :id="isShow && isFailure ? 'active' : 'inactive'">
-    保存に失敗しました
-  </div>
+  <transition>
+    <div class="toast failure" v-show="isShow && isFailure">
+      保存に失敗しました
+    </div>
+  </transition>
   <!-- トースト(画像サイズ超過) -->
-  <div
-    class="toast failure"
-    :id="isShow && hasExceededFileSize ? 'active' : 'inactive'"
-  >
-    ※画像サイズは5MB以下にしてください
-  </div>
+  <transition>
+    <div class="toast failure" v-show="isShow && hasExceededFileSize">
+      ※画像サイズは5MB以下にしてください
+    </div>
+  </transition>
 </template>
 
 <script>
@@ -109,20 +107,23 @@ export default defineComponent({
 
     //画像をDBに保存する---------------------------
     const storeImageList = () => {
+      //サイズ上限のトースト判定を非表示にする
+      hasExceededFileSize.value = false;
+
       axios
-        .post(`https://httpbin.org/post?imageList=${imageList}`)
-        // .post(`https://httpbin.org/status/404`)
+        // .post(`https://httpbin.org/post?imageList=${imageList}`)
+        .post(`https://httpbin.org/status/404`)
         .then((response) => {
           console.log('res', response);
           //トースト表示(保存成功)用のフラグを設定
           isSucceeded.value = true;
           isFailure.value = false;
         })
-        .catch(() => {
+        .catch((error) => {
           //トースト表示(保存失敗)用のフラグを設定
           isSucceeded.value = false;
           isFailure.value = true;
-          console.log('保存に失敗しました');
+          console.log('保存に失敗しました', error);
         });
       showToast();
     };
@@ -143,7 +144,7 @@ export default defineComponent({
       isShow.value = false;
     };
 
-    //画像編集時の操作フィールド(移動・削除ボタン)に切り替える
+    //操作フィールドを「移動・削除ボタン」に切り替える
     const referenceImageIndex = ref(-1); //編集対象の画像のインデックス
     const editImage = (imageIndex) => {
       //既に編集ボタンを選択済みの場合は選択を解除する
@@ -154,7 +155,7 @@ export default defineComponent({
       referenceImageIndex.value = imageIndex;
     };
 
-    //右に移動する
+    //右移動
     const movingLeft = () => {
       const imageIndex = referenceImageIndex.value;
       const targetImage = imageList[imageIndex];
@@ -163,7 +164,7 @@ export default defineComponent({
       referenceImageIndex.value = imageIndex - 1;
     };
 
-    //左に移動する
+    //左移動
     const movingRight = () => {
       const imageIndex = referenceImageIndex.value;
       const targetImage = imageList[imageIndex];
@@ -171,10 +172,12 @@ export default defineComponent({
       imageList.splice(imageIndex + 1, 0, targetImage);
       referenceImageIndex.value = imageIndex + 1;
     };
+
     //画像の選択を解除する
     const deselectImage = () => {
       referenceImageIndex.value = -1;
     };
+
     //削除する
     const deleteImage = () => {
       if (window.confirm('画像を削除してもよろしいですか?')) {
@@ -207,7 +210,7 @@ export default defineComponent({
   height: 100vh;
   padding: 10px 0px;
 }
-.mainArea__contentainer {
+.mainArea__container {
   height: 100%;
 }
 .title {
@@ -260,7 +263,7 @@ export default defineComponent({
 /* トースト */
 .toast {
   position: fixed;
-  bottom: 10px;
+  bottom: 30px;
   right: 10px;
   color: #fff;
   border-radius: 4px;
@@ -273,12 +276,21 @@ export default defineComponent({
 .failure {
   background: rgb(242, 85, 85);
 }
-#active {
-  display: block;
-  transition: 0.5s;
+/* トーストのアニメーション */
+.v-enter-active,
+.v-leave-active {
+  transition: transform 100ms cubic-bezier(0, 0, 0.9, 1) 0ms;
 }
-#inactive {
-  display: none;
-  transition: 0.5s;
+
+.v-enter-from,
+.v-leave-to {
+  transform: translateY(150px);
+}
+
+/* スマホサイズ */
+@media screen and (max-width: 375px) {
+  .toast {
+    bottom: 90px;
+  }
 }
 </style>
