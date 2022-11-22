@@ -7,3 +7,7 @@ export default {
   name: 'App',
 };
 </script>
+
+<style>
+@import './assets/style/reset.scss';
+</style>
