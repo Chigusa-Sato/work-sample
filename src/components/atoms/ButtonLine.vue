@@ -24,8 +24,8 @@ export default defineComponent({
 <style scoped>
 .button_line {
   padding: 5px;
-  color: rgb(226, 83, 83);
-  border: 2px solid rgb(226, 83, 83);
+  color: rgb(88, 88, 88);
+  border: 2px solid rgb(88, 88, 88);
   background: #fff;
   border-radius: 4px;
   text-align: center;
@@ -33,7 +33,7 @@ export default defineComponent({
 }
 
 .button_line:hover {
-  background: rgb(226, 83, 83);
+  background: rgb(88, 88, 88);
   color: #fff;
   font-weight: bold;
 }

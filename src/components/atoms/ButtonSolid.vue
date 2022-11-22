@@ -26,14 +26,14 @@ export default defineComponent({
   padding: 5px;
   color: #fff;
   font-weight: bold;
-  border: 2px solid rgb(62, 136, 255);
-  background: rgb(62, 136, 255);
+  border: 2px solid rgb(88, 88, 88);
+  background: rgb(88, 88, 88);
   border-radius: 4px;
   text-align: center;
 }
 .button_solid:hover {
-  color: rgb(62, 136, 255);
-  border: 2px solid rgb(62, 136, 255);
+  color: rgb(88, 88, 88);
+  border: 2px solid rgb(88, 88, 88);
   background: #fff;
 }
 </style>
