@@ -7,7 +7,7 @@
         @clickEvent="onClickEvent"
         label="保存"
         v-show="hasImageList"
-        class="button__medium"
+        class="button__medium save"
       />
     </div>
     <!-- 編集時(移動・削除) -->
@@ -150,6 +150,16 @@ export default defineComponent({
 }
 .button__medium {
   width: 150px;
+}
+.save {
+  color: #fff;
+  border: 2px solid rgb(62, 136, 255);
+  background: rgb(62, 136, 255);
+}
+.save:hover {
+  color: rgb(62, 136, 255);
+  border: 2px solid rgb(62, 136, 255);
+  background: #fff;
 }
 .text--error {
   color: red;

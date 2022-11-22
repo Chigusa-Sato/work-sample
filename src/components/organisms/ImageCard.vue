@@ -69,15 +69,6 @@ export default defineComponent({
 }
 .button__edit {
   width: 50px;
-  background: black;
-  color: white;
-  border: 2px solid black;
-  opacity: 60%;
-}
-.button__edit:hover {
-  background: white;
-  border: 2px solid black;
-  color: black;
 }
 .button__delete {
   width: 50px;
@@ -97,6 +88,6 @@ export default defineComponent({
   right: 10px;
 }
 .selected {
-  border: 4px solid rgb(180, 180, 180);
+  border: 10px solid rgb(180, 180, 180);
 }
 </style>
