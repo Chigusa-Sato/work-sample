@@ -25,8 +25,8 @@ export default defineComponent({
   components: { ButtonLine },
   setup(props, { emit }) {
     const inputFile = ref();
-    //「ファイルを選択」ボタンを押下すると非表示中の
-    //input=fileが発火する
+
+    //「ファイルを選択」ボタンを押下すると非表示中のinput=fileが発火する
     const selectFile = () => {
       inputFile.value.click();
     };
@@ -42,13 +42,7 @@ export default defineComponent({
 .fileUpload__input {
   display: none;
 }
-/* .fileUpload__button {
-  cursor: default;
-  background: #90c9ff;
-  border-radius: 2px;
-  color: #555;
-  padding: 10px 12px;
-} */
+
 #buttonLine--normal {
   color: rgb(88, 88, 88);
   border: 2px solid rgb(88, 88, 88);
