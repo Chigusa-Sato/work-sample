@@ -9,5 +9,5 @@ export default {
 </script>
 
 <style>
-@import './assets/style/reset.scss';
+@import './assets/style/reset.css';
 </style>
