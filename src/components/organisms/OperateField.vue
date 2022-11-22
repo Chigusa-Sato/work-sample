@@ -43,7 +43,7 @@
 import { defineComponent, ref, computed, onMounted } from 'vue';
 import ButtonLine from '../atoms/ButtonLine.vue';
 import ButtonSolid from '../atoms/ButtonSolid.vue';
-import UploadButton from '../atoms/UploadButton.vue';
+import UploadButton from '../morecules/UploadButton.vue';
 
 export default defineComponent({
   components: { ButtonLine, UploadButton, ButtonSolid },
@@ -86,12 +86,12 @@ export default defineComponent({
     onMounted(() => {
       window.addEventListener('resize', calculateWindowWidth);
     });
+
     //移動ボタンに表示するテキスト
     let buttonTextBack = ref('←左へ');
     let buttonTextFoward = ref('右へ→');
-    // 画面幅(px)
+    // 画面幅509px以下の場合は「上下」へ移動に表示切替
     const windowWidth = ref(0);
-    //509px以下の場合は「上下」へ移動
     const calculateWindowWidth = () => {
       windowWidth.value = window.innerWidth;
       if (windowWidth.value < 509) {
