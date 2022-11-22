@@ -145,7 +145,7 @@ export default defineComponent({
     //操作フィールドを「移動・削除ボタン」に切り替える
     let referenceImageIndex = ref(-1);
     const editImage = (imageIndex) => {
-      //既に編集ボタンを選択済みの場合は選択を解除する
+      //既に編集ボタンを選択済みの場合は選択を解除
       if (imageIndex === referenceImageIndex.value) {
         referenceImageIndex.value = -1;
         return;
@@ -213,43 +213,12 @@ export default defineComponent({
   font-weight: bold;
   color: rgb(88, 88, 88);
 }
-
 .cardList {
   width: 100%;
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
   gap: 10px;
-}
-.card_item {
-  width: 250px;
-  height: 250px;
-  border: 1px solid #a0a0a0;
-  display: flex;
-  align-items: center;
-}
-.card_item_img {
-  width: 100%;
-}
-
-.button_line {
-  width: 150px;
-  padding: 5px;
-  color: rgb(226, 83, 83);
-  border: 2px solid rgb(251, 124, 124);
-  background: #fff;
-  border-radius: 4px;
-  text-align: center;
-}
-.button_solid {
-  width: 150px;
-  padding: 5px;
-  color: #fff;
-  font-weight: bold;
-  border: 2px solid rgb(62, 136, 255);
-  background: rgb(62, 136, 255);
-  border-radius: 4px;
-  text-align: center;
 }
 /* トースト */
 .success {
