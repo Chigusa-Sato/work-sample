@@ -11,6 +11,6 @@ https://work-sample-tau.vercel.app/
 2.アップロード後、編集したい画像の「編集」ボタンを押下します。
 
 3.操作フィールドが編集モードに切り替わるので、画像の移動および削除操作を行い、「完了」ボタンを押下します。※下記画像参照
-![Untitled (5)](https://user-images.githubusercontent.com/83741212/203510694-72d08811-6e71-47a5-9bf9-b37d3e695799.jpg)
+![Untitled (6)](https://user-images.githubusercontent.com/83741212/203514404-6491b878-6933-448a-81ff-d92fc737ce2b.jpg)
 
 4.「保存」ボタンから画像の保存を行います。
